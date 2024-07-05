@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('addUser');
+        return view('add');
     }
 
     /**
@@ -56,7 +56,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $users = User::findOrFail($id); //findOrFail - if user search wrong id 404 redirection
-        return view('viewUser', compact('users'));
+        return view('view-user', compact('users'));
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $users = User::find($id);
-        return view('updateUser', compact('users'));
+        return view('update', compact('users'));
     }
 
     /**
