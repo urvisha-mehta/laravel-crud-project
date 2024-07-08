@@ -107,7 +107,7 @@
                     </select>
                 <span class="text-danger">
                     @error('state')
-                        {{$message}} 
+                        {{$message}}    
                     @enderror
                 </span>
                 </div>

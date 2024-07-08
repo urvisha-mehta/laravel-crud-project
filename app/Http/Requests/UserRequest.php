@@ -25,11 +25,11 @@ class UserRequest extends FormRequest
             'firstName' => 'required|alpha',
             'lastName' => 'required|alpha',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|alpha_num|min:6',
+            'password' => 'required|min:6|regex:/^[a-zA-Z0-9! $#%]+$/', // at least one special character pending',
             'phoneNumber' => 'required|numeric|min_digits:10|max_digits:10',
             'country' => 'required',
             'state' => 'required',
-            'profilePicture' => 'required|mimes:jpeg,jpg,png'
+            'profilePicture' => 'required|extensions:jpeg,jpg,png',
         ];
     }
 }

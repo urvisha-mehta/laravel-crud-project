@@ -48,7 +48,11 @@
 
    <tr>
     <th>Hobby:</th>
-    <td>{{$users->hobby}}</td>
+    <td> 
+        @foreach($users->hobbies as $hobby)
+            {{ $hobby->{"hobby-name"} }}
+        @endforeach 
+    </td>
    </tr>
 
 </table>

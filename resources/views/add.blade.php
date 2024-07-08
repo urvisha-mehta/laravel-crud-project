@@ -11,7 +11,7 @@
         <h1>Fill The Form</h1>
     </div>
 <div class="card-body">
-    <form action="{{route('users.store')}}" method="POST">
+    <form action="{{route('users.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
 
             <div class="mb-3">
@@ -80,11 +80,11 @@
             <div class="form-group mb-3">
                 <label>Select Hobbies</label>
                 <div class="form-check">
-                    <input class="form-check-input form_data" type="checkbox" id="writing-hobby" name="hobby-name[]" value="Writing">
+                    <input class="form-check-input form_data" type="checkbox" id="writing-hobby" name="hobbies[]" value="1">
                     <label for="writing-hobby">Writing</label><br>
-                    <input class="form-check-input form_data" type="checkbox" id="reading-hobby" name="hobby-name[]" value="Reading">
+                    <input class="form-check-input form_data" type="checkbox" id="reading-hobby" name="hobbies[]" value="2">
                     <label for="reading-hobby">Reading</label><br>
-                    <input class="form-check-input form_data" type="checkbox" id="coding-hobby" name="hobby-name[]" value="Coding">
+                    <input class="form-check-input form_data" type="checkbox" id="coding-hobby" name="hobbies[]" value="3">
                     <label for="coding-hobby">Coding</label>
                 </div>
             </div>
@@ -119,7 +119,7 @@
 
             <div class="form-group mb-3">
                 <label for="profile_pic">Upload Profile Picture:</label>
-                <input class="form-control mb-2 @error('profilePicture') is-invalid @enderror" accept="image/*" name="profilePicture" type="file" id="uploadImage" value="{{ old('profilePicture') }}">
+                <input class="form-control mb-2 @error('profilePicture') is-invalid @enderror" name="profilePicture" accept="image/*" type="file" value="profilePicture" >
                 <span class="text-danger">
                     @error('profilePicture')
                         {{$message}} 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Hobby;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -15,10 +17,6 @@ class UserController extends Controller
     {
         $users = User::with('hobbies')->get();
         return view('home', compact('users'));
-        // $hobbies = User::find(1)->hobbies()->get();
-        // $hobby = [1, 2];
-        // $hobbies->hobbies()->attach($hobby);
-        // return $hobbies;
     }
 
     /**
@@ -26,7 +24,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('add');
+        $hobbies = Hobby::all(); // Fetch all hobbies
+        return view('add', compact('hobbies'));
+
+        //compact and $data is same compact use is variable to create array
+        // $data = ['hobbies' => $hobbies];  
+        //return view('add', $data)
+
     }
 
     /**
@@ -34,18 +38,18 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        User::create([
+        $user = User::create([
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
             'phoneNumber' => $request->phoneNumber,
             'gender' => $request->gender,
             'country' => $request->country,
             'state' => $request->state,
-            'profilePicture' => $request->profilePicture,
-            // 'hobbies' => $request->hobby,
+            'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
         ]);
+        $user->hobbies()->attach($request->input('hobbies', []));
 
         return redirect()->route('users.index');
     }

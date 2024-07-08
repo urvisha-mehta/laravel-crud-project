@@ -36,7 +36,11 @@
                         <td>{{$user->country}}</td>
                         <td>{{$user->state}}</td>
                         <td>{{$user->profilePicture}}</td>
-                        <td>{{$user->hobby}}</td>
+                        <td>
+                            @foreach($user->hobbies as $hobby)
+                                {{ $hobby->{'hobby-name'} }}
+                            @endforeach        
+                        </td>
                         <td><a href="{{route('users.show' , $user->id )}}" class="btn btn-primary btn-sm">View</a></td>
                         <td><a href="{{route('users.edit' , $user->id )}}" class="btn btn-secondary btn-sm">Update</a></td>
                         <td>
