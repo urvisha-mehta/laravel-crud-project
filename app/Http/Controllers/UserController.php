@@ -6,6 +6,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\Hobby;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\User\Request as UserForRequest;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -13,10 +14,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private $route = "admin.user";
+    private $view = "admin.user";
+
     public function index()
     {
         $users = User::with('hobbies')->get();
-        return view('home', compact('users'));
+        return view("$this->view.index", compact('users'));
     }
 
     /**
@@ -25,7 +29,7 @@ class UserController extends Controller
     public function create()
     {
         $hobbies = Hobby::all(); // Fetch all hobbies
-        return view('add', compact('hobbies'));
+        return view('admin.user.create', compact('hobbies'));
 
         //compact and $data is same compact use is variable to create array
         // $data = ['hobbies' => $hobbies];  
@@ -36,6 +40,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(UserRequest $request)
     {
         $user = User::create([
@@ -49,9 +54,23 @@ class UserController extends Controller
             'state' => $request->state,
             'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
         ]);
-        $user->hobbies()->attach($request->input('hobbies', []));
+        $user->hobbies()->attach($request->hobbies ?? []);
 
-        return redirect()->route('users.index');
+        $response = [];
+        if ($user) {
+            $response['status'] = 'success';
+            $response['message'] = 'Data Inserted Successfully';
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($response);
+            // exit;
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Error : Something Wrong, Please Try Again';
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($response);
+            // exit;
+        }
+        // return redirect()->route('users.create');
     }
 
     /**
@@ -68,7 +87,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $users = User::find($id);
+        $users = User::findOrFail($id);
         return view('update', compact('users'));
     }
 
@@ -82,13 +101,15 @@ class UserController extends Controller
                 'firstName' => $request->firstName,
                 'lastName' => $request->lastName,
                 'email' => $request->email,
-                'password' => $request->password,
+                'password' => Hash::make($request->password),
                 'phoneNumber' => $request->phoneNumber,
                 'country' => $request->country,
                 'state' => $request->state,
-                'profilePicture' => $request->profilePicture,
-                'hobby' => $request->hobby,
+                'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
             ]);
+        $user->hobbies()->attach($request->input('hobbies', []));
+
+
 
         return redirect()->route('users.index');
     }

@@ -5,7 +5,14 @@
 @endsection
 
 @section('content')
-            <form action="{{route('users.update' , $users->id)}}" method="POST">
+{{-- @dd($users) --}}
+
+<div class="card">
+    <div class="card-header">
+        <h1>Update The Form</h1>
+    </div>
+<div class="card-body">
+            <form action="{{route('users.update' , $users->id)}}" id="updateUser" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT') {{--used for only update not working on read , add , delete --}}
 
@@ -75,11 +82,11 @@
                 <div class="form-group mb-3">
                     <label>Select Hobbies</label>
                     <div class="form-check">
-                        <input class="form-check-input form_data" type="checkbox" id="writing-hobby" name="name[]" value="Writing">
+                        <input class="form-check-input form_data" type="checkbox" id="writing-hobby" name="hobbies[]" value="1">
                         <label for="writing-hobby">Writing</label><br>
-                        <input class="form-check-input form_data" type="checkbox" id="reading-hobby" name="name[]" value="Reading">
+                        <input class="form-check-input form_data" type="checkbox" id="reading-hobby" name="hobbies[]" value="2">
                         <label for="reading-hobby">Reading</label><br>
-                        <input class="form-check-input form_data" type="checkbox" id="coding-hobby" name="name[]" value="Coding">
+                        <input class="form-check-input form_data" type="checkbox" id="coding-hobby" name="hobbies[]" value="3">
                         <label for="coding-hobby">Coding</label>
                     </div>
                 </div>
@@ -114,7 +121,7 @@
     
                 <div class="form-group mb-3">
                     <label for="profile_pic">Upload Profile Picture:</label>
-                    <input class="form-control mb-2 @error('profilePicture') is-invalid @enderror" accept="image/*" name="profilePicture" type="file" id="uploadImage" value="{{ old('profilePicture') }}">
+                    <input class="form-control mb-2 @error('profilePicture') is-invalid @enderror" accept="image/*" name="profilePicture" type="file" id="uploadImage" value="profilePicture">
                     <span class="text-danger">
                         @error('profilePicture')
                             {{$message}} 
@@ -122,7 +129,44 @@
                     </span>
                 </div>
               
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary submit" id="submit" value="submit">Update</button>
                 <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a>
             </form>
+        </div>
+    </div>
+            <div id="response">
+            </div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            
+            <script>
+                $(document).ready(function() {
+                    $('#updateUser').on('submit', function(event) {
+                        event.preventDefault();
+                        var action = $(this).attr("action");
+                        $.ajax({
+                            url: action,
+                            type: 'POST',
+                            processData: false,
+                            cache: false,
+                            contentType: false,
+                            data: new FormData(this),
+                            success: function(response) {
+                                let error = response?.error;
+                                if (response?.status == "success") {
+                                        alert('form was submitted');
+                                    }
+                                    $(document).find("span.text-danger").text('');
+                                        if (error) {
+                                            Object.keys(error).map((item) => {
+                                                $(document).find(`[name=${item}]`).siblings('.text-danger').text(error[item]);
+                                            })
+                                        }
+                            },
+                            error: function(xhr, status, error) {
+                                $('#response').text('Error: ' + error);
+                            }
+                        });
+                    });
+                });
+            </script>
 @endsection            
