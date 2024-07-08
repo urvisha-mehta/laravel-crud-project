@@ -26,11 +26,6 @@ class UserController extends Controller
     {
         $hobbies = Hobby::all(); // Fetch all hobbies
         return view('add', compact('hobbies'));
-
-        //compact and $data is same compact use is variable to create array
-        // $data = ['hobbies' => $hobbies];  
-        //return view('add', $data)
-
     }
 
     /**
