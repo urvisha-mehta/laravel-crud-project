@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout.layout')
 
 @section('title')
     View User
@@ -17,37 +17,37 @@
    </tr>
 
    <tr>
-    <th>Email:</th>
+    <th width = "80px">Email:</th>
     <td>{{$users->email}}</td>
    </tr>
 
-   <tr>
-    <th>Password:</th>
+   {{-- <tr>
+    <th width = "80px">Password:</th>
     <td>{{$users->password}}</td>
-   </tr>
+   </tr> --}}
 
    <tr>
-    <th>Phone Number:</th>
+    <th width = "80px">Phone Number:</th>
     <td>{{$users->phoneNumber}}</td>
    </tr>
 
    <tr>
-    <th>Country:</th>
+    <th width = "80px">Country:</th>
     <td>{{$users->country}}</td>
    </tr>
 
    <tr>
-    <th>State:</th>
+    <th width = "80px">State:</th>
     <td>{{$users->state}}</td>
    </tr>
 
-   <tr>
-    <th>Profile Picture:</th>
+   {{-- <tr>
+    <th width = "80px">Profile Picture:</th>
     <td>{{$users->profilePicture}}</td>
-   </tr>
+   </tr> --}}
 
    <tr>
-    <th>Hobby:</th>
+    <th width = "80px">Hobby:</th>
     <td> 
         @foreach($users->hobbies as $hobby)
             {{ $hobby->{"hobby-name"} }}

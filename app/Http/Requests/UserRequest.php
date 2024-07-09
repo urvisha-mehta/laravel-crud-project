@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
             'phoneNumber' => 'required|numeric|min_digits:10|max_digits:10',
             'country' => 'required',
             'state' => 'required',
-            'profilePicture' => 'required|extensions:jpeg,jpg,png|max:2048',
+            // 'profilePicture' => 'required|extensions:jpeg,jpg,png|max:2048',
         ];
     }
 }

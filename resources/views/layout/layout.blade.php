@@ -24,6 +24,23 @@
     <div class="p-3">
       <div class="container">
         <div class="row align-items-center">
+          <div class="col-6">
+              @if (session('success'))
+                  <div class="alert alert-success">
+                    {{ session('success') }}
+                  </div>
+              @endif
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>    
+    
+
+  <div class="content-wrapper">
+    <div class="p-3">
+      <div class="container">
+        <div class="row align-items-center">
           <div class="col-lg-12">
             @yield('content')
           </div>

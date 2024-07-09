@@ -7,11 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    public $timestamps = false;
-
-    protected $guarded = [];
-
     use HasFactory;
+    // public $timestamps = false;
+
+    protected $fillable = [
+        'firstName',
+        'lastName',
+        'email',
+        'password',
+        'phoneNumber',
+        'gender',
+        'country',
+        'state'
+    ];
+
+    public $appends = ['full_name'];
+
+    public function getFullNameAttribute()
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
 
     public function hobbies()
     {

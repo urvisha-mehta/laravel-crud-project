@@ -5,21 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\Hobby;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Requests\User\Request as UserForRequest;
+// use Illuminate\Http\Request;
+// use App\Http\Requests\User\Request as UserForRequest; //as for naming purpose
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    private $route = "admin.user";
+    private $view = "admin.user"; //like php base path
+
     /**
      * Display a listing of the resource.
      */
-    private $route = "admin.user";
-    private $view = "admin.user";
-
     public function index()
     {
-        $users = User::with('hobbies')->get();
+        $users = User::with('hobbies')->paginate(10);
         return view("$this->view.index", compact('users'));
     }
 
@@ -29,7 +30,7 @@ class UserController extends Controller
     public function create()
     {
         $hobbies = Hobby::all(); // Fetch all hobbies
-        return view('admin.user.create', compact('hobbies'));
+        return view("$this->view.create", compact('hobbies'));
 
         //compact and $data is same compact use is variable to create array
         // $data = ['hobbies' => $hobbies];  
@@ -52,25 +53,13 @@ class UserController extends Controller
             'gender' => $request->gender,
             'country' => $request->country,
             'state' => $request->state,
-            'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
+            // 'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
         ]);
         $user->hobbies()->attach($request->hobbies ?? []);
 
-        $response = [];
-        if ($user) {
-            $response['status'] = 'success';
-            $response['message'] = 'Data Inserted Successfully';
-            header('Content-Type: application/json; charset=utf-8');
-            echo json_encode($response);
-            // exit;
-        } else {
-            $response['status'] = 'error';
-            $response['message'] = 'Error : Something Wrong, Please Try Again';
-            header('Content-Type: application/json; charset=utf-8');
-            echo json_encode($response);
-            // exit;
-        }
-        // return redirect()->route('users.create');
+        return redirect()->route('users.index')->with('success', 'Your Changes Successfully Changed')->response()->json(['message' => 'Form submitted successfully!']);
+
+        // return redirect()->route('users.index')->with('success', 'Your Changes Successfully Changed');
     }
 
     /**
@@ -79,7 +68,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $users = User::findOrFail($id); //findOrFail - if user search wrong id 404 redirection
-        return view('view-user', compact('users'));
+        return view("$this->view.view-user", compact('users'));
     }
 
     /**
@@ -88,7 +77,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $users = User::findOrFail($id);
-        return view('update', compact('users'));
+        return view("$this->view.edit", compact('users'));
     }
 
     /**
@@ -105,13 +94,11 @@ class UserController extends Controller
                 'phoneNumber' => $request->phoneNumber,
                 'country' => $request->country,
                 'state' => $request->state,
-                'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
+                // 'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
             ]);
         $user->hobbies()->attach($request->input('hobbies', []));
 
-
-
-        return redirect()->route('users.index');
+        return redirect()->route("$this->view.index")->with('success', 'Your Changes Successfully Changed');
     }
 
     /**
@@ -121,6 +108,6 @@ class UserController extends Controller
     {
         User::destroy($id);  //multiple data delete at a time 
 
-        return redirect()->route('users.index');
+        return redirect()->route("$this->view.index");
     }
 }

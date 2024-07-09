@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Hobby extends Model
 {
     public $timestamps = false;
-    protected $guarded = [];
+    // protected $guarded = [];
+
+    protected $fillable = [
+        'hobby-name'
+    ];
 
     use HasFactory;
 
