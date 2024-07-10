@@ -23,10 +23,10 @@ class User extends Model
 
     public $appends = ['full_name'];
 
-    public function getFullNameAttribute()
-    {
-        return $this->firstName . ' ' . $this->lastName;
-    }
+    // public function getFullNameAttribute()
+    // {
+    //     return $this->firstName . ' ' . $this->lastName;
+    // }
 
     public function hobbies()
     {

@@ -24,8 +24,8 @@ class UserRequest extends FormRequest
         return [
             'firstName' => 'required|alpha',
             'lastName' => 'required|alpha',
-            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|regex:/^[a-zA-Z0-9! $#%]+$/', // at least one special character pending',
+            // 'email' => 'required|email|unique:users,email,' . $this->user->id,
             'phoneNumber' => 'required|numeric|min_digits:10|max_digits:10',
             'country' => 'required',
             'state' => 'required',

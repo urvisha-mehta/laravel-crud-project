@@ -44,6 +44,10 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
+        ]);
+
         $user = User::create([
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
@@ -57,7 +61,7 @@ class UserController extends Controller
         ]);
         $user->hobbies()->attach($request->hobbies ?? []);
 
-        return response()->json(['success' => 'Form submitted successfully!']);
+        return response()->json(['redirect' => route('users.index')]);
 
         // return redirect()->route('users.index')->with('success', 'Your Changes Successfully Changed');
     }
@@ -68,6 +72,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $users = User::findOrFail($id); //findOrFail - if user search wrong id 404 redirection
+        // dd($users->hobbies->lists('id'));
         return view("$this->view.view-user", compact('users'));
     }
 
@@ -77,7 +82,10 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $users = User::findOrFail($id);
-        return view("$this->view.edit", compact('users'));
+        // dd($users->hobbies);
+        $hobbies = $users->hobbies->pluck('id')->toArray();
+        // dd($users->hobbies->pluck('id'));
+        return view("$this->view.edit", compact(['users', 'hobbies']));
     }
 
     /**
@@ -85,6 +93,11 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, string $id)
     {
+        $request->validate([
+            'email' => 'required|email|unique:users,email,' . $id,
+            'hobbies' => 'array',
+        ]);
+
         $user = User::where('id', $id)
             ->update([
                 'firstName' => $request->firstName,
@@ -97,9 +110,12 @@ class UserController extends Controller
                 'state' => $request->state,
                 // 'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
             ]);
-        $user->hobbies()->attach($request->input('hobbies', []));
+        $user = User::findOrFail($id);
+        $user->hobbies()->sync($request->hobbies);
 
-        return redirect()->route("$this->view.index")->with('success', 'Your Changes Successfully Changed');
+        return response()->json(['redirect' => route('users.index')]);
+
+        // return redirect()->route("$this->view.index")->with('success', 'Your Changes Successfully Changed');
     }
 
     /**
@@ -109,6 +125,6 @@ class UserController extends Controller
     {
         User::destroy($id);  //multiple data delete at a time 
 
-        return redirect()->route("$this->view.index");
+        return redirect()->route('users.index');
     }
 }

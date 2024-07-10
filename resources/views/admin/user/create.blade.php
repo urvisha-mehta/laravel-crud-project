@@ -14,7 +14,6 @@
 
     <form id="createUser" name="createUser" enctype="multipart/form-data">
         @csrf
-
             <div class="mb-3">
             <label class="form-lable">First Name:</label>
             <input type="text" value="{{ old('firstName') }}" class="form-control mb-3 @error('firstName') is-invalid @enderror" name="firstName" id="firstName" >
@@ -162,7 +161,9 @@
         contentType:false,
         
     success: function(response) {
-        console.log(response);
+       if(response.redirect){ 
+        window.location.href = response.redirect;
+       }
     },
     error: function(xhr, status, error) {
         // console.log(xhr);

@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+
         <a href="{{route('users.create')}}" class="btn btn-success btn-sm mb-3 mt-3">Add User</a>
         <table class="table table-bordered table-striped">
             <tr>
