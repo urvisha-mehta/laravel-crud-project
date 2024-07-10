@@ -182,57 +182,5 @@
 })
     });
 </script>
-
-{{-- <script type="text/javascript">
-    $(document).ready(function () {
-        if ($('#createUser').length > 0) {
-            $('#createUser').validate({
-                rules: {
-                   firstName:"required",
-                   lastName:"required",
-                   email:{
-                        required:true,
-                        email:true
-                   },
-                   password:{
-                        required:true,
-                        minlength:6
-                   },
-                   phoneNumber:{
-                        required:true,
-                        minlength:10,
-                        maxlength:10
-                   }
-
-                },
-                messages: {
-                    firstName:"Enter Your First Name",
-                    lastName:"Enter Your Last Name",
-                    email:{
-                        required:"Enter Your Email",
-                        email:"Enter Valid Email"
-                    },
-                    password:{
-                        required:"Enter Your Password",
-                        minlength:"Password Must Be 6 Character Long"
-                    },
-                    phoneNumber:{
-                        required:"Enter Your Phone Number",
-                        minlength:"Phone Number Must Be 10 Digit Long",
-                        maxlength:"Phone Number Must Be 10 Digit Long"
-                    }
-                },
-
-                submitHandler: function (form) {
-
-                    form.submit();
-                },
-                errorPlacement: function (error, element) {
-                    error.appendTo(element.parent());
-                }
-            });
-        }
-    });
-</script> --}}
     
 @endsection
