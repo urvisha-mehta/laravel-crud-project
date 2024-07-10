@@ -57,7 +57,7 @@ class UserController extends Controller
         ]);
         $user->hobbies()->attach($request->hobbies ?? []);
 
-        return redirect()->route('users.index')->with('success', 'Your Changes Successfully Changed')->response()->json(['message' => 'Form submitted successfully!']);
+        return response()->json(['success' => 'Form submitted successfully!']);
 
         // return redirect()->route('users.index')->with('success', 'Your Changes Successfully Changed');
     }
@@ -92,6 +92,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'phoneNumber' => $request->phoneNumber,
+                'gender' => $request->gender,
                 'country' => $request->country,
                 'state' => $request->state,
                 // 'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),

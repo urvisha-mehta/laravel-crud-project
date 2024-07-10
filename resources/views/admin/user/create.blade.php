@@ -11,14 +11,13 @@
         <h1>Fill The Form</h1>
     </div>
 <div class="card-body">
-    <div id="response"></div>
 
     <form id="createUser" name="createUser" enctype="multipart/form-data">
         @csrf
 
             <div class="mb-3">
             <label class="form-lable">First Name:</label>
-            <input type="text" value="{{ old('firstName') }}" class="form-control mb-3 @error('firstName') is-invalid @enderror" name="firstName" id="first-name" >
+            <input type="text" value="{{ old('firstName') }}" class="form-control mb-3 @error('firstName') is-invalid @enderror" name="firstName" id="firstName" >
             {{-- <span class="text-danger error">
                 @error('firstName')
                     {{$message}} 
@@ -29,7 +28,7 @@
 
             <div class="mb-3">
             <label class="form-lable">Last Name:</label>
-            <input type="text" value="{{ old('lastName') }}" class="form-control mb-3 @error('lastName') is-invalid @enderror" name="lastName" id="last-name" >
+            <input type="text" value="{{ old('lastName') }}" class="form-control mb-3 @error('lastName') is-invalid @enderror" name="lastName" id="lastName" >
             {{-- <span class="text-danger error">
                 @error('lastName')
                     {{$message}} 
@@ -62,7 +61,7 @@
 
             <div class="mb-3">
             <label class="form-lable">Phone Number:</label>
-            <input type="number" value="{{ old('phoneNumber') }}" class="form-control mb-3 @error('phoneNumber') is-invalid @enderror" name="phoneNumber" id="phone-number" >
+            <input type="number" value="{{ old('phoneNumber') }}" class="form-control mb-3 @error('phoneNumber') is-invalid @enderror" name="phoneNumber" id="phoneNumber" >
             {{-- <span class="text-danger error">
                 @error('phoneNumber')
                     {{$message}} 
@@ -143,13 +142,13 @@
 
 </div>
 </div>
+<div id="response"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
 <script>
     $(document).ready(function() {
-        $("#createUser").submit(function(e){
+    $("#createUser").submit(function(e){
     e.preventDefault();
     let form = $('#createUser')[0];
     let data = new FormData(form);
@@ -163,19 +162,19 @@
         contentType:false,
         
     success: function(response) {
-        // console.log(response);
+        console.log(response);
     },
     error: function(xhr, status, error) {
         // console.log(xhr);
         var response =  xhr.responseJSON;
+        $(document).find("span.error").text('');
         if (response.errors) {
-            var errorMsg = '';
-            $.each(response.errors, function(field, errors) {
-                $.each(errors, function(index, error) {
-                    errorMsg += error + '<br>';
+            $.each(response.errors, function(key, errors) {
+                var errorSpan = $("#" + key).next(".error");
+                errors.forEach(function(message) {
+                    errorSpan.append("<div>" + message + "</div>");
                 });
             });
-            document.getElementById("response").innerHTML = errorMsg;
             }
     }
     });

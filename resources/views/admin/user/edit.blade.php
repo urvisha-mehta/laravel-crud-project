@@ -69,12 +69,12 @@
                 <div class="form-group mb-3">
                     <label for="gender">Select Gender</label>
                     <div class="form-check">
-                        <input class="form-check-input form_data" type="radio" id="male-gender" name="gender" value="Male" checked>
+                        <input class="form-check-input form_data" type="radio" id="male-gender" name="gender" value="Male {{ $user->gender == 'Male' ? 'checked' : ''}}" checked>
                         <label for="male-gender">Male</label>
                     </div>
     
                     <div class="form-check">
-                        <input class="form-check-input form_data" type="radio" id="female-gender" name="gender" value="Female">
+                        <input class="form-check-input form_data" type="radio" id="female-gender" name="gender" value="Female {{ $user->gender == 'Female' ? 'checked' : ''}}">
                         <label for="female-gender">Female</label>
                     </div>
                 </div>
