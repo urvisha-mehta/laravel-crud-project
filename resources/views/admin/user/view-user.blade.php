@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.user.add')
 
 @section('title')
     View User
@@ -8,49 +8,49 @@
 <table class="table table-bordered table-striped">
    <tr>
     <th width = "80px">First Name:</th>
-    <td>{{$users->firstName}}</td>
+    <td>{{$user->first_name}}</td>
    </tr>
 
    <tr>
     <th width = "80px">Last Name:</th>
-    <td>{{$users->lastName}}</td>
+    <td>{{$user->last_name}}</td>
    </tr>
 
    <tr>
     <th width = "80px">Email:</th>
-    <td>{{$users->email}}</td>
+    <td>{{$user->email}}</td>
    </tr>
 
    {{-- <tr>
     <th width = "80px">Password:</th>
-    <td>{{$users->password}}</td>
+    <td>{{$user->password}}</td>
    </tr> --}}
 
    <tr>
     <th width = "80px">Phone Number:</th>
-    <td>{{$users->phoneNumber}}</td>
+    <td>{{$user->phone_number}}</td>
    </tr>
 
    <tr>
     <th width = "80px">Country:</th>
-    <td>{{$users->country}}</td>
+    <td>{{ $user->country->name }}</td>
    </tr>
 
    <tr>
     <th width = "80px">State:</th>
-    <td>{{$users->state}}</td>
+    <td>{{$user->state}}</td>
    </tr>
 
    {{-- <tr>
     <th width = "80px">Profile Picture:</th>
-    <td>{{$users->profilePicture}}</td>
+    <td>{{$user->profilePicture}}</td>
    </tr> --}}
 
    <tr>
     <th width = "80px">Hobby:</th>
     <td> 
-        @foreach($users->hobbies as $hobby)
-            {{ $hobby->{"hobby-name"} }}
+        @foreach($user->hobbies as $hobby)
+            {{ $hobby->name }}
         @endforeach 
     </td>
    </tr>

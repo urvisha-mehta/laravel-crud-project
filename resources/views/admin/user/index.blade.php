@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.user.add')
 
 @section('title')
     View User Listing
@@ -13,12 +13,10 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-                {{-- <th>Password</th> --}}
                 <th>Phone Number</th>
                 <th>Gender</th>
                 <th>Country</th>
                 <th>State</th>
-                {{-- <th>Profile Picture</th> --}}
                 <th>Hobbies</th>
                 <th>View</th>
                 <th>Edit</th>
@@ -27,19 +25,17 @@
 
                 @foreach ($users as $user)
                     <tr>
-                        <td>{{$user->id}}</td>
-                        <td>{{$user->firstName}}</td>
-                        <td>{{$user->lastName}}</td>
+                        <td>{{$loop->iteration}}</td> 
+                        <td>{{$user->first_name}}</td>
+                        <td>{{$user->last_name}}</td>
                         <td>{{$user->email}}</td>
-                        {{-- <td>{{$user->password}}</td> --}}
-                        <td>{{$user->phoneNumber}}</td>
+                        <td>{{$user->phone_number}}</td>
                         <td>{{$user->gender}}</td>
-                        <td>{{$user->country}}</td>
-                        <td>{{$user->state}}</td>
-                        {{-- <td>{{$user->profilePicture}}</td> --}}
+                        <td>{{ $user->country->name }}</td>
+                        <td>{{$user->state->name}}</td>
                         <td>
                             @foreach($user->hobbies as $hobby)
-                                {{ $hobby->{'hobby-name'} }}
+                                {{ $hobby->name }}
                             @endforeach        
                         </td>
                         <td><a href="{{route('users.show' , $user->id )}}" class="btn btn-primary btn-sm">View</a></td>

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Hobby extends Model
+class Country extends Model
 {
     use HasFactory;
 
@@ -13,9 +13,13 @@ class Hobby extends Model
         'name'
     ];
 
-    public $timestamps = false;
+    public function states()
+    {
+        return $this->hasMany(State::class);
+    }
+
     public function users()
     {
-        return $this->belongsToMany(User::class, 'hobby_user');
+        return $this->hasMany(User::class);
     }
 }

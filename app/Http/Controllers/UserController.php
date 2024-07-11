@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
 use App\Models\Hobby;
 use App\Models\User;
-// use Illuminate\Http\Request;
-// use App\Http\Requests\User\Request as UserForRequest; //as for naming purpose
+use App\Http\Requests\User\Request as UserRequest; //as for naming purpose
+use App\Models\Country;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
+use App\Models\State;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -20,8 +20,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('hobbies')->paginate(10);
-        return view("$this->view.index", compact('users'));
+        $users = User::paginate(5);
+        $countries = Country::get();
+        // $states = State::get();
+        return view("$this->view.index", ['users' => $users, 'countries' => $countries]);
     }
 
     /**
@@ -30,62 +32,48 @@ class UserController extends Controller
     public function create()
     {
         $hobbies = Hobby::all(); // Fetch all hobbies
-        return view("$this->view.create", compact('hobbies'));
-
-        //compact and $data is same compact use is variable to create array
-        // $data = ['hobbies' => $hobbies];  
-        //return view('add', $data)
-
+        $countries = Country::get();
+        return view("$this->view.create", ['user' => $hobbies, 'countries' => $countries]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(UserRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email|unique:users,email',
-        ]);
-
         $user = User::create([
-            'firstName' => $request->firstName,
-            'lastName' => $request->lastName,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'phoneNumber' => $request->phoneNumber,
+            'phone_number' => $request->phone_number,
             'gender' => $request->gender,
-            'country' => $request->country,
-            'state' => $request->state,
+            'country_id' => $request->country_id,
+            'state_id' => $request->state_id,
             // 'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
         ]);
         $user->hobbies()->attach($request->hobbies ?? []);
-
         return response()->json(['redirect' => route('users.index')]);
-
-        // return redirect()->route('users.index')->with('success', 'Your Changes Successfully Changed');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
-        $users = User::findOrFail($id); //findOrFail - if user search wrong id 404 redirection
-        // dd($users->hobbies->lists('id'));
-        return view("$this->view.view-user", compact('users'));
+        $user = User::findOrFail($id); //findOrFail - if user search wrong id 404 redirection
+        return view("$this->view.view-user", ['user' => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
-        $users = User::findOrFail($id);
-        // dd($users->hobbies);
-        $hobbies = $users->hobbies->pluck('id')->toArray();
-        // dd($users->hobbies->pluck('id'));
-        return view("$this->view.edit", compact(['users', 'hobbies']));
+        $user = User::findOrFail($id);
+        $userHobbies = $user->hobbies->pluck('id')->toArray();
+        $countries = Country::get();
+        return view("$this->view.edit", ['user' => $user, 'userHobbies' => $userHobbies, 'countries' => $countries]);
     }
 
     /**
@@ -94,34 +82,30 @@ class UserController extends Controller
     public function update(UserRequest $request, string $id)
     {
         $request->validate([
-            'email' => 'required|email|unique:users,email,' . $id,
             'hobbies' => 'array',
         ]);
 
         $user = User::where('id', $id)
             ->update([
-                'firstName' => $request->firstName,
-                'lastName' => $request->lastName,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'phoneNumber' => $request->phoneNumber,
+                'phone_number' => $request->phone_number,
                 'gender' => $request->gender,
-                'country' => $request->country,
-                'state' => $request->state,
+                'country_id' => $request->country_id,
+                'state_id' => $request->state_id,
                 // 'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
             ]);
         $user = User::findOrFail($id);
         $user->hobbies()->sync($request->hobbies);
-
         return response()->json(['redirect' => route('users.index')]);
-
-        // return redirect()->route("$this->view.index")->with('success', 'Your Changes Successfully Changed');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         User::destroy($id);  //multiple data delete at a time 
 

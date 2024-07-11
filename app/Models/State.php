@@ -5,17 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Hobby extends Model
+class State extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name', 'country_id'
     ];
 
-    public $timestamps = false;
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
     public function users()
     {
-        return $this->belongsToMany(User::class, 'hobby_user');
+        return $this->hasMany(User::class);
     }
 }

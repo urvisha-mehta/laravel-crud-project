@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('phoneNumber');
             $table->enum('gender', ['Male', 'Female']);
-            $table->string('country');
-            $table->string('state');
             $table->string('profilePicture');
             $table->timestamps();
         });
