@@ -27,6 +27,7 @@ class Request extends FormRequest
             'password' => 'required|min:6|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
             'email' => 'required|email|unique:users,email,' . $this->user,
             'phone_number' => 'required|numeric|min_digits:10|max_digits:10',
+            'hobbies' => 'array',
             'country_id' => 'required',
             'state_id' => 'required',
         ];

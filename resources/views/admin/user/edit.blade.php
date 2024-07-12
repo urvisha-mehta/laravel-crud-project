@@ -35,7 +35,7 @@
               
                 <div class="mb-3">
                     <label class="form-lable">Password:</label>
-                    <input type="password" value="" class="form-control mb-3" name="password" id="password">
+                    <input type="password" value="{{$user->password}}" class="form-control mb-3" name="password" id="password">
                     <span class="text-danger text-bold error"></span>                    
                 </div>
 

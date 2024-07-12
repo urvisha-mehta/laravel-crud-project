@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Requests\User\Request as UserRequest; //as for naming purpose
 use App\Models\Country;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -16,11 +17,16 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(3);
-        $countries = Country::get();
-        return view("$this->view.index", ['users' => $users, 'countries' => $countries]);
+        $users = User::query();
+        $isActive = true;
+        if ($request->is_active == "false") {
+            $isActive = false;
+        }
+        $users = User::where('status', $isActive)->paginate(10);
+
+        return view("$this->view.index", ['users' => $users]);
     }
 
     /**
@@ -78,22 +84,23 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, string $id)
     {
-        $request->validate([
-            'hobbies' => 'array',
-        ]);
+        $inputData = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'gender' => $request->gender,
+            'country_id' => $request->country_id,
+            'state_id' => $request->state_id,
+            // 'profile_picture' => $request->file('profile_picture')->getClientOriginalName(),
+        ];
+
+        if (!empty($request->password)) {
+            $inputData['password'] = Hash::make($request->password);
+        }
 
         $user = User::where('id', $id)
-            ->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'phone_number' => $request->phone_number,
-                'gender' => $request->gender,
-                'country_id' => $request->country_id,
-                'state_id' => $request->state_id,
-                // 'profile_picture' => $request->file('profile_picture')->getClientOriginalName(),
-            ]);
+            ->update($inputData);
         $user = User::findOrFail($id);
         $user->hobbies()->sync($request->hobbies);
         return response()->json(['redirect' => route('users.index')]);

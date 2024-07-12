@@ -7,8 +7,8 @@
 @section('content')
 
         <a href="{{route('users.create')}}" class="btn btn-primary btn-sm mb-3 mt-3">Add User</a>
-        <a href="{{route('get-active-status')}}" class="btn btn-success btn-sm mb-3 mt-3">Active</a>
-        <a href="{{route('get-in-active-status')}}" class="btn btn-danger btn-sm mb-3 mt-3">In Active</a>
+        <a href="{{route('users.index')}}" class="btn btn-success btn-sm mb-3 mt-3">Active</a>
+        <a href="{{route('users.index', ['is_active' => "false"])}}" class="btn btn-danger btn-sm mb-3 mt-3">In Active</a>
 
         <table class="table table-bordered table-striped">
             <tr>
