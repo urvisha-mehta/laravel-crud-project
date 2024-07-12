@@ -7,8 +7,6 @@ use App\Models\User;
 use App\Http\Requests\User\Request as UserRequest; //as for naming purpose
 use App\Models\Country;
 use Illuminate\Support\Facades\Hash;
-use App\Models\State;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -20,9 +18,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(5);
+        $users = User::paginate(3);
         $countries = Country::get();
-        // $states = State::get();
         return view("$this->view.index", ['users' => $users, 'countries' => $countries]);
     }
 
@@ -31,9 +28,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $hobbies = Hobby::all(); // Fetch all hobbies
         $countries = Country::get();
-        return view("$this->view.create", ['user' => $hobbies, 'countries' => $countries]);
+        return view("$this->view.create", ['countries' => $countries]);
     }
 
     /**
@@ -50,7 +46,7 @@ class UserController extends Controller
             'gender' => $request->gender,
             'country_id' => $request->country_id,
             'state_id' => $request->state_id,
-            // 'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
+            // 'profile_picture' => $request->file('profile_picture')->getClientOriginalName(),
         ]);
         $user->hobbies()->attach($request->hobbies ?? []);
         return response()->json(['redirect' => route('users.index')]);
@@ -71,9 +67,10 @@ class UserController extends Controller
     public function edit(int $id)
     {
         $user = User::findOrFail($id);
-        $userHobbies = $user->hobbies->pluck('id')->toArray();
+        $hobbies = Hobby::get();
+        $userHobbiesId = $user->hobbies->pluck('id')->toArray();
         $countries = Country::get();
-        return view("$this->view.edit", ['user' => $user, 'userHobbies' => $userHobbies, 'countries' => $countries]);
+        return view("$this->view.edit", ['user' => $user, 'hobbies' => $hobbies, 'userHobbiesId' => $userHobbiesId, 'countries' => $countries]);
     }
 
     /**
@@ -95,7 +92,7 @@ class UserController extends Controller
                 'gender' => $request->gender,
                 'country_id' => $request->country_id,
                 'state_id' => $request->state_id,
-                // 'profilePicture' => $request->file('profilePicture')->getClientOriginalName(),
+                // 'profile_picture' => $request->file('profile_picture')->getClientOriginalName(),
             ]);
         $user = User::findOrFail($id);
         $user->hobbies()->sync($request->hobbies);

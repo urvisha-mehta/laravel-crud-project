@@ -70,11 +70,7 @@
 
             <div class="form-group mb-3">
                 <label for="country">Select Country:</label>
-                <select name="country_id" id="country" class="form-control form_data" >
-                    {{-- @php
-                    use App\Models\Country;
-                    $countries = Country::get();
-                    @endphp --}}
+                <select name="country_id" id="country_id" class="form-control form_data" >
                     <option value="">-- Select Country --</option>
                     @foreach ($countries as $country)
                     <option value="{{$country->id}}">
@@ -87,7 +83,7 @@
 
             <div class="form-group mb-3">
                 <label for="state">Select State:</label>
-                <select name="state_id" id="state" class="form-control form_data" >
+                <select name="state_id" id="state_id" class="form-control form_data" >
                     <option value="">-- Select State --</option>
                 </select>
             <span class="text-danger text-bold error"></span>
@@ -150,9 +146,9 @@
     })
     });
 
-    $('#country').on('change', function () {
+    $('#country_id').on('change', function () {
                 var idCountry = this.value;
-                $("#state").html('');
+                $("#state_id").html('');
                 $.ajax({
                     url: "{{route('fetch-states')}}",
                     type: "GET",
@@ -161,9 +157,9 @@
                     },
                     dataType: 'json',
                     success: function (result) {
-                        $('#state').html('<option value="">-- Select State --</option>');
+                        $('#state_id').html('<option value="">-- Select State --</option>');
                         $.each(result.states, function (key, value) {
-                            $("#state").append('<option value="' + value
+                            $("#state_id").append('<option value="' + value
                                 .id + '">' + value.name + '</option>');
                         });
                     }

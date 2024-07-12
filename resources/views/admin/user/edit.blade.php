@@ -48,12 +48,12 @@
                 <div class="form-group mb-3">
                     <label for="gender">Select Gender</label>
                         <div class="form-check">
-                            <input class="form-check-input form_data" type="radio" id="male-gender" name="gender" {{ $user->gender == 'Male' ? 'checked' : '' }} value="Male">
+                            <input class="form-check-input form_data" type="radio" id="male-gender" name="gender" {{ $user->gender == 'male' ? 'checked' : '' }} value="Male">
                             <label for="male-gender">Male</label>
                         </div>
                     
                         <div class="form-check">
-                            <input class="form-check-input form_data" type="radio" id="female-gender" name="gender" {{ $user->gender == 'Female' ? 'checked' : '' }} value="Female">
+                            <input class="form-check-input form_data" type="radio" id="female-gender" name="gender" {{ $user->gender == 'female' ? 'checked' : '' }} value="Female">
                             <label for="female-gender">Female</label>
                         </div>
                 </div>
@@ -61,13 +61,9 @@
                 <div class="form-group mb-3">
                     <label>Select Hobbies</label>
                     <div class="form-check">
-                        @php
-                        use App\Models\Hobby;
-                        $hobbies = Hobby::get();
-                        @endphp
                         @if (!empty($hobbies)) 
                             @foreach ($hobbies as $hobby) 
-                                <input class="form-check-input" type="checkbox" name="hobbies[]"  {{ in_array($hobby->id, $userHobbies) ? 'checked' : null;}}  value="{{$hobby->id}}">{{$hobby->name}}<br>
+                                <input class="form-check-input" type="checkbox" name="hobbies[]"  {{ in_array($hobby->id, $userHobbiesId) ? 'checked' : null;}}  value="{{$hobby->id}}">{{$hobby->name}}<br>
                             @endforeach
                         @endif
                     </div>
@@ -75,22 +71,23 @@
 
                 <div class="form-group mb-3">
                     <label for="country">Select Country:</label>
-                    <select name="country" id="country" class="form-control form_data">
+                    <select name="country_id" id="country_id" class="form-control form_data" >
                         <option value="">-- Select Country --</option>
                         @foreach ($countries as $country)
-                        <option>
+                        <option value="{{$country->id}}">
                             {{$country->name}}
                         </option>
                         @endforeach
                     </select>
-                    <span class="text-danger text-bold error"></span>                  
+                <span class="text-danger text-bold error"></span>
                 </div>
     
                 <div class="form-group mb-3">
                     <label for="state">Select State:</label>
-                    <select name="state" id="state" class="form-control form_data">
+                    <select name="state_id" id="state_id" class="form-control form_data" >
+                        <option value="">-- Select State --</option>
                     </select>
-                    <span class="text-danger text-bold error"></span>               
+                <span class="text-danger text-bold error"></span>
                 </div>
     
                 {{-- <div class="form-group mb-3">
@@ -149,9 +146,9 @@
         });
     })
 });
-$('#country').on('change', function () {
+$('#country_id').on('change', function () {
                 var idCountry = this.value;
-                $("#state").html('');
+                $("#state_id").html('');
                 $.ajax({
                     url: "{{route('fetch-states')}}",
                     type: "GET",
@@ -160,9 +157,9 @@ $('#country').on('change', function () {
                     },
                     dataType: 'json',
                     success: function (result) {
-                        $('#state').html('<option value="">-- Select State --</option>');
+                        $('#state_id').html('<option value="">-- Select State --</option>');
                         $.each(result.states, function (key, value) {
-                            $("#state").append('<option value="' + value
+                            $("#state_id").append('<option value="' + value
                                 .id + '">' + value.name + '</option>');
                         });
                     }

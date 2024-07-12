@@ -7,6 +7,9 @@
 @section('content')
 
         <a href="{{route('users.create')}}" class="btn btn-success btn-sm mb-3 mt-3">Add User</a>
+        <a href="{{route('get-active-status')}}" class="btn btn-success btn-sm mb-3 mt-3">Active</a>
+        <a href="{{route('get-in-active-status')}}" class="btn btn-success btn-sm mb-3 mt-3">In Active</a>
+
         <table class="table table-bordered table-striped">
             <tr>
                 <th>Index</th>
@@ -18,6 +21,7 @@
                 <th>Country</th>
                 <th>State</th>
                 <th>Hobbies</th>
+                <th>Status</th>
                 <th>View</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -38,6 +42,7 @@
                                 {{ $hobby->name }}
                             @endforeach        
                         </td>
+                        <td>{{$user->status}}</td>
                         <td><a href="{{route('users.show' , $user->id )}}" class="btn btn-primary btn-sm">View</a></td>
                         <td><a href="{{route('users.edit' , $user->id )}}" class="btn btn-secondary btn-sm">Edit</a></td>
                         <td>

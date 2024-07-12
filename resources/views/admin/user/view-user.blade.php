@@ -38,12 +38,12 @@
 
    <tr>
     <th width = "80px">State:</th>
-    <td>{{$user->state}}</td>
+    <td>{{$user->state->name}}</td>
    </tr>
 
    {{-- <tr>
     <th width = "80px">Profile Picture:</th>
-    <td>{{$user->profilePicture}}</td>
+    <td>{{$user->profile_picture}}</td>
    </tr> --}}
 
    <tr>
