@@ -20,13 +20,6 @@ class User extends Model
         'gender'
     ];
 
-    // public $appends = ['full_name'];
-
-    // public function getFullNameAttribute()
-    // {
-    //     return $this->firstName . ' ' . $this->lastName;
-    // }
-
     public function hobbies()
     {
         return $this->belongsToMany(Hobby::class, 'hobby_user');

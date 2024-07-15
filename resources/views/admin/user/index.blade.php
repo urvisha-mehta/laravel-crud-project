@@ -13,8 +13,7 @@
         <table class="table table-bordered table-striped">
             <tr>
                 <th>Index</th>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Gender</th>
@@ -30,19 +29,24 @@
                 @foreach ($users as $user)
                     <tr>
                         <td>{{$loop->iteration}}</td> 
-                        <td>{{$user->first_name}}</td>
-                        <td>{{$user->last_name}}</td>
+                        <td>{{$user->first_name}} {{$user->last_name}}</td>
                         <td>{{$user->email}}</td>
                         <td>{{$user->phone_number}}</td>
                         <td>{{$user->gender}}</td>
-                        <td>{{ $user->country->name }}</td>
+                        <td>{{$user->country->name}}</td>
                         <td>{{$user->state->name}}</td>
                         <td>
                             @foreach($user->hobbies as $hobby)
                                 {{ $hobby->name }}
                             @endforeach        
                         </td>
-                        <td>{{$user->status}}</td>
+                        <td> 
+                            @if($user->status == 1)
+                            Active
+                            @else
+                            In Active
+                            @endif
+                        </td>
                         <td><a href="{{route('users.show' , $user->id )}}" class="btn btn-primary btn-sm">View</a></td>
                         <td><a href="{{route('users.edit' , $user->id )}}" class="btn btn-secondary btn-sm">Edit</a></td>
                         <td>

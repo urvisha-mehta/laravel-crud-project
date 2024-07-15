@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\StateController;
-use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
