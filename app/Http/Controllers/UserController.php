@@ -104,17 +104,15 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->hobbies()->sync($request->hobbies);
 
-        if (!empty($request->profile_picture)) {
-            if ($request->hasFile('profile_picture')) {
-                $path = public_path("storage/") . $user->profile_picture;
-                if (file_exists($path)) {
-                    @unlink($path);
-                }
-
-                $path = $request->profile_picture->store('images', 'public');
-                $user->profile_picture = $path;
-                $user->save();
+        if ($request->hasFile('profile_picture')) {
+            $path = public_path("storage/") . $user->profile_picture;
+            if (file_exists($path)) {
+                @unlink($path);
             }
+
+            $path = $request->profile_picture->store('images', 'public');
+            $user->profile_picture = $path;
+            $user->save();
         }
         return response()->json(['redirect' => route('users.index')]);
     }
@@ -124,14 +122,14 @@ class UserController extends Controller
      */
     public function destroy(int $id)
     {
-        $user =  User::findOrFail($id);  //multiple data delete at a time 
-        $user->delete();
+        $user =  User::findOrFail($id);
 
         $path = public_path("storage/") . $user->profile_picture;
         if (file_exists($path)) {
             @unlink($path);
         }
 
+        $user->delete();
         return redirect()->route('users.index');
     }
 }

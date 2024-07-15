@@ -35,7 +35,7 @@
                         <td>{{$user->phone_number}}</td>
                         <td>{{$user->gender}}</td>
                         <td>{{$user->country->name}}</td>
-                        <td>{{$user->state->name}}</td>
+                        <td>{{$user->state->name ?? '-'}}</td>
                         <td>
                             @foreach($user->hobbies as $hobby)
                                 {{ $hobby->name }}

@@ -147,13 +147,13 @@
     })
 });
 $('#country_id').on('change', function () {
-                var idCountry = this.value;
+                var countryId = this.value;
                 $("#state_id").html('');
                 $.ajax({
                     url: "{{route('fetch-states')}}",
                     type: "GET",
                     data: {
-                        country_id: idCountry,
+                        country_id: countryId,
                     },
                     dataType: 'json',
                     success: function (result) {
