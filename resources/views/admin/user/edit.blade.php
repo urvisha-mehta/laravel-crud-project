@@ -89,18 +89,18 @@
                     </select>
                 <span class="text-danger text-bold error"></span>
                 </div>
-    
-                {{-- <div class="form-group mb-3">
+
+                <div class="form-group mb-3">
                     <label for="profile_pic">Upload Profile Picture:</label>
-                    <input class="form-control mb-2 @error('profilePicture') is-invalid @enderror" accept="image/*" name="profilePicture" type="file" id="uploadImage" value="profilePicture">
-                    <span class="text-danger">
-                        @error('profilePicture')
-                            {{$message}} 
-                        @enderror
-                    </span>
-                </div> --}}
+                    <input class="form-control mb-2" name="profile_picture" accept=".jpg, .png, .jpeg" type="file" onchange="document.querySelector('#profile').src=window.URL.createObjectURL(this.files[0])">
+                <span class="text-danger text-bold error"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <img id="profile" class="img-thumbnail" src="{{ asset('/storage/'. $user->profile_picture) }}" height="100px" width="100px">
+                </div>
               
-                <button type="submit" class="btn btn-primary submit" id="submit" value="submit">Update</button>
+                <button type="submit" class="btn btn-primary submit" id="submit" value="update">Update</button>
                 <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a>
             </form>
         </div>

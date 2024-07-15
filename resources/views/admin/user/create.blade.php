@@ -89,15 +89,11 @@
             <span class="text-danger text-bold error"></span>
             </div>
 
-            {{-- <div class="form-group mb-3">
+            <div class="form-group mb-3">
                 <label for="profile_pic">Upload Profile Picture:</label>
-                <input class="form-control mb-2 @error('profilePicture') is-invalid @enderror" name="profilePicture" accept="image/*" type="file" value="profilePicture" id="profile" >
-                <span class="text-danger error">
-                    @error('profilePicture')
-                        {{$message}} 
-                    @enderror
-                </span>
-            </div> --}}
+                <input class="form-control mb-2" name="profile_picture" accept=".jpg, .png, .jpeg" type="file">
+            <span class="text-danger text-bold error"></span>
+            </div>
 
             <button class="btn btn-primary submit" type="submit" name="submit" value="submit" id="submit">Submit</button>
             <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a>

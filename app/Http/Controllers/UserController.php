@@ -43,6 +43,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        $path = $request->file('profile_picture')->store('images', 'public');
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -52,7 +53,7 @@ class UserController extends Controller
             'gender' => $request->gender,
             'country_id' => $request->country_id,
             'state_id' => $request->state_id,
-            // 'profile_picture' => $request->file('profile_picture')->getClientOriginalName(),
+            'profile_picture' => $path,
         ]);
         $user->hobbies()->attach($request->hobbies ?? []);
         return response()->json(['redirect' => route('users.index')]);
@@ -103,6 +104,19 @@ class UserController extends Controller
             ->update($inputData);
         $user = User::findOrFail($id);
         $user->hobbies()->sync($request->hobbies);
+
+        if (!empty($request->profile_picture)) {
+            if ($request->hasFile('profile_picture')) {
+                $path = public_path("storage/") . $user->profile_picture;
+                if (file_exists($path)) {
+                    @unlink($path);
+                }
+
+                $path = $request->profile_picture->store('images', 'public');
+                $user->profile_picture = $path;
+                $user->save();
+            }
+        }
         return response()->json(['redirect' => route('users.index')]);
     }
 
@@ -111,7 +125,13 @@ class UserController extends Controller
      */
     public function destroy(int $id)
     {
-        User::destroy($id);  //multiple data delete at a time 
+        $user =  User::findOrFail($id);  //multiple data delete at a time 
+        $user->delete();
+
+        $path = public_path("storage/") . $user->profile_picture;
+        if (file_exists($path)) {
+            @unlink($path);
+        }
 
         return redirect()->route('users.index');
     }

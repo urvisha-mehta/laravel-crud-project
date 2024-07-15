@@ -41,10 +41,12 @@
     <td>{{$user->state->name}}</td>
    </tr>
 
-   {{-- <tr>
+   <tr>
     <th width = "80px">Profile Picture:</th>
-    <td>{{$user->profile_picture}}</td>
-   </tr> --}}
+    <td>
+        <img class="img-thumbnail" src="{{ asset('/storage/'. $user->profile_picture) }}" height="100px" width="100px">
+    </td>
+   </tr>
 
    <tr>
     <th width = "80px">Hobby:</th>

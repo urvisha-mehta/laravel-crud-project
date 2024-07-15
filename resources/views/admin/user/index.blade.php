@@ -21,6 +21,7 @@
                 <th>State</th>
                 <th>Hobbies</th>
                 <th>Status</th>
+                <th>Profile_picture</th>
                 <th>View</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -46,6 +47,9 @@
                             @else
                             In Active
                             @endif
+                        </td>
+                        <td>
+                            <img class="img-thumbnail" src="{{ asset('/storage/'. $user->profile_picture) }}" height="100px" width="100px">
                         </td>
                         <td><a href="{{route('users.show' , $user->id )}}" class="btn btn-primary btn-sm">View</a></td>
                         <td><a href="{{route('users.edit' , $user->id )}}" class="btn btn-secondary btn-sm">Edit</a></td>

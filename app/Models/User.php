@@ -17,6 +17,7 @@ class User extends Model
         'country_id',
         'state_id',
         'phone_number',
+        'profile_picture',
         'gender'
     ];
 
