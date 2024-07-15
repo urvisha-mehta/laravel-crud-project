@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hobbies', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+        Schema::table('users', function (Blueprint $table) {
+            $table->tinyInteger('status')->default(1);
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hobbies');
+        Schema::table('users', function (Blueprint $table) {
+            Schema::dropIfExists('status');
+        });
     }
 };

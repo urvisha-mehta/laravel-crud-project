@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hobbies', function (Blueprint $table) {
+        Schema::create('states', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('country_id')
+                ->refernces('id')
+                ->on('countries')
+                ->cascadeOnDelete();
         });
     }
 
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hobbies');
+        Schema::dropIfExists('states');
     }
 };
