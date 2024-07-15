@@ -93,6 +93,7 @@ class UserController extends Controller
             'gender' => $request->gender,
             'country_id' => $request->country_id,
             'state_id' => $request->state_id,
+            // 'profile_picture' => $request->file('profile_picture')->getClientOriginalName(),
         ];
 
         if (!empty($request->password)) {
